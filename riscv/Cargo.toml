@@ -22,6 +22,7 @@ targets = [
 [features]
 default = ["riscv-macros"]
 s-mode = []
+h-mode = []
 critical-section-single-hart = ["critical-section/restore-state-bool"]
 
 [dependencies]
