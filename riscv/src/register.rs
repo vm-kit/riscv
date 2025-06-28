@@ -114,6 +114,9 @@ pub use self::mhpmeventx::*;
 // Machine configuration
 pub mod mconfigptr;
 
+// Hypervisor Setup
+pub mod hstatus;
+
 #[cfg(test)]
 mod tests;
 
