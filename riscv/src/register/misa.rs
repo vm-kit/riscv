@@ -42,6 +42,12 @@ read_only_csr_field! {
     XLEN: [62:63],
 }
 
+read_write_csr_field! {
+    Misa,
+    /// Hypervisor Enabled Misa field
+    h: 7,
+}
+
 impl Misa {
     /// Returns true when a given extension is implemented.
     ///
@@ -95,5 +101,8 @@ mod tests {
             assert!(!Misa::from_bits(0).has_extension(ext));
             assert!(Misa::from_bits(1 << ext_char_to_bit(ext)).has_extension(ext));
         });
+
+        let mut misa = Misa { bits: 0 };
+        test_csr_field!(misa, h)
     }
 }
