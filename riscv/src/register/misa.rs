@@ -9,11 +9,10 @@ read_only_csr! {
 }
 
 #[cfg(not(target_arch = "riscv32"))]
-read_only_csr! {
+read_write_csr! {
     /// `misa` register
     Misa: 0x301,
     mask: 0xc000_0000_03ff_ffff,
-    sentinel: 0,
 }
 
 csr_field_enum! {
@@ -42,13 +41,15 @@ read_only_csr_field! {
     XLEN: [62:63],
 }
 
-read_write_csr_field! {
-    Misa,
-    /// Hypervisor Enabled Misa field
-    h: 7,
-}
-
 impl Misa {
+    /// Hypervisor Enable or Disable
+    #[inline]
+    pub unsafe fn set_h(val: bool) {
+        let mut value = _read();
+        value &= !(1 << 7);
+        value |= (val as usize) << 7;
+        _write(value);
+    }
     /// Returns true when a given extension is implemented.
     ///
     /// # Example
@@ -101,8 +102,5 @@ mod tests {
             assert!(!Misa::from_bits(0).has_extension(ext));
             assert!(Misa::from_bits(1 << ext_char_to_bit(ext)).has_extension(ext));
         });
-
-        let mut misa = Misa { bits: 0 };
-        test_csr_field!(misa, h)
     }
 }
