@@ -11,9 +11,9 @@ pub mod machine;
 pub mod supervisor;
 pub mod hypervisor;
 
-#[cfg(not(feature = "s-mode"))]
+#[cfg(all(not(feature = "s-mode"), not(feature = "h-mode")))]
 pub use machine::*;
-#[cfg(all(feature = "s-mode", not(feature = "h-mode")))]
+#[cfg(feature = "s-mode")]
 pub use supervisor::*;
 #[cfg(feature = "h-mode")]
 pub use hypervisor::*;
@@ -24,7 +24,7 @@ pub use hypervisor::*;
 /// The [`mcause`](crate::register::mcause::Mcause::cause) and
 /// [`scause`](crate::register::scause::Scause::cause) registers return a value of this type.
 /// However, the trap cause is represented as raw numbers. To get a target-specific trap cause,
-/// use [`Trap::try_into`] with your target-specific M-Mode or S-Mode trap cause types.
+/// use [`Trap::try_into`] with your target-specific M-Mode, V-Mode, or S-Mode trap cause types.
 ///
 /// # Example
 ///

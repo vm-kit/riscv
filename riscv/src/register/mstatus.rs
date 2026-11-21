@@ -200,7 +200,7 @@ read_only_csr_field! {
 
 read_write_csr_field! {
     Mstatus,
-    /// Modify Memory PRiVilege
+    /// Modify Memory Privilege
     mprv: 17,
 }
 
