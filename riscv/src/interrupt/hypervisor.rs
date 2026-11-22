@@ -240,6 +240,7 @@ where
     F: FnOnce() -> R,
 {
     let sstatus = sstatus::read();
+    let hstatus = hstatus::read();
     let sepc = sepc::read();
 
     // enable interrupts to allow nested interrupts
@@ -256,6 +257,9 @@ where
     // Restore SSTATUS.SPIE, SSTATUS.SPP, and SEPC
     if sstatus.spie() {
         sstatus::set_spie();
+    }
+    if hstatus.spv() {
+        hstatus::set_spv(hstatus::SPV::Virtualization);
     }
     //hstatus::set_spv(hstatus.spv());
     sepc::write(sepc);

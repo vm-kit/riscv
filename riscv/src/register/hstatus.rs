@@ -9,14 +9,14 @@ use crate::bits::{bf_extract, bf_insert};
 read_write_csr! {
     /// hstatus register
     Hstatus: 0x600,
-    mask: 0x8000_003f_007f_ffea,
+    mask: 0x00000003_0073F3E0,
 }
 
 #[cfg(target_arch = "riscv32")]
 read_write_csr! {
     /// hstatus register
     Hstatus: 0x600,
-    mask: 0x807f_ffea,
+    mask: 0x0073F3E0,
 }
 
 csr_field_enum! {
@@ -185,14 +185,12 @@ impl Hstatus {
     }
 
     /// VS-mode non-instruction-fetch memory endianness.
-    ///
-    /// In RISCV-32, this field is read from the [`crate::register::hstatush`] register.
     pub fn vsbe(&self) -> Endianness {
         match () {
             #[cfg(not(target_arch = "riscv32"))]
-            () => Endianness::from(bf_extract(self.bits, 36, 1) != 0),
+            () => Endianness::from(bf_extract(self.bits, 5, 1) != 0),
             #[cfg(target_arch = "riscv32")]
-            () => super::hstatush::read().sbe(),
+            () => self.vsbe(),
         }
     }
 
@@ -201,16 +199,10 @@ impl Hstatus {
     /// Note this updates a previously read [`Hstatus`] value, but does not
     /// affect the hstatus CSR itself. See [`set_vsbe`] to directly update the
     /// CSR.
-    ///
-    /// # Note
-    ///
-    /// On RISCV-32 platforms, this function does not exist on the [`Hstatus`] instance.
-    ///
-    /// Instead, RISCV-32 users should use the [`Hstatush`](crate::register::hstatush::Hstatush) register.
     #[inline]
     #[cfg(not(target_arch = "riscv32"))]
     pub fn set_vsbe(&mut self, endianness: Endianness) {
-        self.bits = bf_insert(self.bits, 36, 1, endianness as usize);
+        self.bits = bf_insert(self.bits, 5, 1, endianness as usize);
     }
 }
 
@@ -272,7 +264,9 @@ pub unsafe fn set_spvp(spvp: SPVP) {
 
 #[cfg(test)]
 mod test {
-    use super::*;
+    use crate::register::hstatus;
+
+use super::*;
 
     #[test]
     fn test_hstatus() {
