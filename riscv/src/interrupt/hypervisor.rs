@@ -1,4 +1,3 @@
-//! TODO:: check the exceptions. I recall them being different
 //! TODO:: implement the methods here for all. Coming from HS-MODE and coming from VS/VU-MODE
 use crate::{
     interrupt::Trap,

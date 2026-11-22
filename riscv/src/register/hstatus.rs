@@ -2,8 +2,7 @@
 //! TODO:: check all masks
 
 pub use super::misa::XLEN;
-#[cfg(not(target_arch = "riscv32"))]
-use crate::bits::{bf_extract, bf_insert};
+use crate::bits::bf_extract;
 
 #[cfg(not(target_arch = "riscv32"))]
 read_write_csr! {
@@ -185,12 +184,7 @@ impl Hstatus {
 
     /// VS-mode non-instruction-fetch memory endianness.
     pub fn vsbe(&self) -> Endianness {
-        match () {
-            #[cfg(not(target_arch = "riscv32"))]
-            () => Endianness::from(bf_extract(self.bits, 5, 1) != 0),
-            #[cfg(target_arch = "riscv32")]
-            () => self.vsbe(),
-        }
+        Endianness::from(bf_extract(self.bits, 5, 1) != 0)
     }
 
     /// Update VS-mode non-instruction-fetch memory endianness
@@ -263,8 +257,6 @@ pub unsafe fn set_spvp(spvp: SPVP) {
 
 #[cfg(test)]
 mod test {
-    use crate::register::hstatus;
-
     use super::*;
 
     #[test]

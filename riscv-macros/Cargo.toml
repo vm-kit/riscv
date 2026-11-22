@@ -25,6 +25,7 @@ riscv-rt = ["rt", "syn/extra-traits", "syn/full"]
 rvrt-pre-default-start-trap = ["riscv-rt"]
 rvrt-u-boot = ["riscv-rt"]
 s-mode = []
+hs-mode = []
 
 [dependencies]
 proc-macro2 = "1.0"
