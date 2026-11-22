@@ -40,7 +40,6 @@ read_only_csr_field! {
     gva: 6,
 }
 
-
 read_write_csr_field! {
     Mstatush,
     /// S-mode non-instruction-fetch memory endianness

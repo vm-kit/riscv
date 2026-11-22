@@ -3,7 +3,7 @@
 use crate::{
     interrupt::Trap,
     register::{hie, hip, hstatus},
-    register::{sstatus, scause, sepc},
+    register::{scause, sepc, sstatus},
     result::{Error, Result},
     CoreInterruptNumber, ExceptionNumber, InterruptNumber,
 };
@@ -292,7 +292,10 @@ mod test {
         assert_eq!(SupervisorTimer.number(), 5);
         assert_eq!(SupervisorExternal.number(), 9);
 
-        assert_eq!(SupervisorGuestExternal.number(), Interrupt::MAX_INTERRUPT_NUMBER)
+        assert_eq!(
+            SupervisorGuestExternal.number(),
+            Interrupt::MAX_INTERRUPT_NUMBER
+        )
     }
 
     #[test]

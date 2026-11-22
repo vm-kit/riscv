@@ -46,7 +46,6 @@ csr_field_enum! {
     }
 }
 
-
 csr_field_enum! {
     /// Hypervisor User Mode Handling
     HU {
@@ -266,7 +265,7 @@ pub unsafe fn set_spvp(spvp: SPVP) {
 mod test {
     use crate::register::hstatus;
 
-use super::*;
+    use super::*;
 
     #[test]
     fn test_hstatus() {
