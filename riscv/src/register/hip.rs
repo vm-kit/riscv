@@ -1,4 +1,5 @@
 //! hip register
+//! TODO:: Check all register Hex
 
 use crate::{bits::bf_extract, CoreInterruptNumber};
 
@@ -40,8 +41,8 @@ impl Hip {
     }
 }
 
-set!(0x144);
-clear!(0x144);
+set!(0x644);
+clear!(0x644);
 
 set_clear_csr!(
     /// Virtual Supervisor Software Interrupt Pending

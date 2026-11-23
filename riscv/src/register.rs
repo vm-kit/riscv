@@ -144,27 +144,27 @@ pub mod vsiselect;
 
 // Hypervisor Trap Handling
 pub mod hip;
-//pub mod hgatp;
+pub mod hgatp;
 
 // Hypervisor Trap Setup
 pub mod hstatus;
-//pub mod hedeleg;
-//pub mod hideleg;
+pub mod hedeleg;
+pub mod hideleg;
 pub mod hie;
-//pub mod hcounteren;
+pub mod hcounteren;
 
 // Virtual Supervisor Trap Handling
-//pub mod vsscratch;
-//pub mod vsepc;
-//pub mod vscause;
-//pub mod vstval;
-//pub mod vsip;
-//pub mod vsatp;
+pub mod vsscratch;
+pub mod vsepc;
+pub mod vscause;
+pub mod vstval;
+pub mod vsip;
+pub mod vsatp;
 
 // Virtual Supervisor Trap Setup
-//pub mod vsie;
-//pub mod vsstatus;
-//pub mod vstvec;
+pub mod vsie;
+pub mod vsstatus;
+pub mod vstvec;
 
 // Entropy source
 pub mod seed;
