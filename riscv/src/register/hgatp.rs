@@ -97,7 +97,7 @@ pub unsafe fn set(mode: Mode, vmid: usize, ppn: usize) {
 #[inline]
 #[cfg(target_pointer_width = "32")]
 pub unsafe fn try_set(mode: Mode, vmid: usize, ppn: usize) -> Result<()> {
-    if vmid != asid & 0x1FF {
+    if vmid != vmid & 0x1FF {
         Err(Error::InvalidFieldValue {
             field: "vmid",
             value: vmid,
