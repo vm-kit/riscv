@@ -1,5 +1,4 @@
 //! hstatus register
-//! TODO:: check all masks
 
 pub use super::misa::XLEN;
 
@@ -12,7 +11,7 @@ use crate::bits::{bf_extract, bf_insert};
 read_write_csr! {
     /// hstatus register
     Hstatus: 0x600,
-    mask: 0x00000003_0073F3E0,
+    mask: 0x0000_0003_0073_F3E0,
 }
 
 #[cfg(target_arch = "riscv32")]
@@ -148,7 +147,7 @@ read_write_csr_field! {
 read_write_csr_field! {
     Hstatus,
     /// Virtual Trap SRET
-    vtsr: 7,
+    vtsr: 22,
 }
 
 #[cfg(not(target_arch = "riscv32"))]
@@ -245,8 +244,8 @@ pub unsafe fn set_vsbe(endianness: Endianness) {
 #[inline]
 pub unsafe fn set_spv(spv: SPV) {
     match spv {
-        SPV::NoVirtualization => _set(1 << 8),
-        SPV::Virtualization => _clear(1 << 8),
+        SPV::NoVirtualization => _set(1 << 7),
+        SPV::Virtualization => _clear(1 << 7),
     }
 }
 
@@ -286,10 +285,6 @@ mod test {
             [Endianness::LittleEndian, Endianness::BigEndian]
                 .into_iter()
                 .for_each(|endianness| {
-                    let mut h = Hstatus::from_bits(0);
-                    h.set_vsbe(endianness);
-                    assert_eq!(h.vsbe(), endianness);
-
                     let mut h = Hstatus::from_bits(0);
                     h.set_vsbe(endianness);
                     assert_eq!(h.vsbe(), endianness);
