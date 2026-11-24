@@ -1,3 +1,4 @@
+//! TODO:: Remove guards
 /// Convenience macro to wrap the `csrrs` assembly instruction for reading a CSR register.
 ///
 /// This macro should generally not be called directly.
@@ -46,6 +47,13 @@ macro_rules! read_csr_rv32 {
     };
 }
 
+#[doc(hidden)]
+#[allow(dead_code)]
+pub trait DuplicateRegisterGuard<const REG: usize> {}
+#[doc(hidden)]
+#[allow(dead_code)]
+pub struct DuplicateRegisterGuardStruct {}
+
 /// Convenience macro to read a CSR register value as a `register` type.
 ///
 /// The `register` type must be a defined type in scope of the macro call.
@@ -60,6 +68,9 @@ macro_rules! read_csr_as {
 
     (base $register:ident, $csr_number:literal, $($cfg:meta),*) => {
         $crate::read_csr!($csr_number, $($cfg),*);
+        // ensure the type for a register is declared only once
+        #[doc(hidden)]
+        impl $crate::register::macros::DuplicateRegisterGuard<$csr_number> for $crate::register::macros::DuplicateRegisterGuardStruct {}
 
         /// Reads the CSR.
         ///
@@ -222,6 +233,13 @@ macro_rules! read_csr_as_usize_rv32 {
     };
 }
 
+#[doc(hidden)]
+#[allow(dead_code)]
+pub trait DuplicateWriteRegisterGuard<const REG: usize> {}
+#[doc(hidden)]
+#[allow(dead_code)]
+pub struct DuplicateWriteRegisterGuardStruct {}
+
 /// Convenience macro to wrap the `csrrw` assembly instruction for writing to CSR registers.
 ///
 /// This macro should generally not be called directly.
@@ -233,6 +251,10 @@ macro_rules! write_csr {
         $crate::write_csr!($csr_number, any(target_arch = "riscv32", target_arch = "riscv64"));
     };
     ($csr_number:literal, $($cfg:meta),*) => {
+        // ensure the type for a register is declared only once
+        #[doc(hidden)]
+        impl $crate::register::macros::DuplicateWriteRegisterGuard<$csr_number> for $crate::register::macros::DuplicateWriteRegisterGuardStruct {}
+
         /// Writes the CSR.
         ///
         /// **WARNING**: panics on non-`riscv` targets.
@@ -496,6 +518,12 @@ macro_rules! csr_uimm5_asm {
         }
     };
 }
+#[doc(hidden)]
+#[allow(dead_code)]
+pub trait DuplicateSetRegisterGuard<const REG: usize> {}
+#[doc(hidden)]
+#[allow(dead_code)]
+pub struct DuplicateSetRegisterGuardStruct {}
 
 /// Convenience macro around the `csrrs`/`csrrsi` assembly instruction to set the CSR register.
 ///
@@ -509,6 +537,10 @@ macro_rules! set {
         $crate::set!($csr_number, $set_name $try_set_name $set_imm_name, any(target_arch = "riscv32", target_arch = "riscv64"));
     };
     ($csr_number:literal, $set_name:ident $try_set_name:ident $set_imm_name:ident, $($cfg:meta),*) => {
+
+        // ensure the type for a register is declared only once
+        #[doc(hidden)]
+        impl $crate::register::macros::DuplicateSetRegisterGuard<$csr_number> for $crate::register::macros::DuplicateSetRegisterGuardStruct {}
         /// Set the CSR.
         ///
         /// **WARNING**: panics on non-`riscv` targets.
@@ -558,6 +590,12 @@ macro_rules! set_rv32 {
     };
 }
 
+#[doc(hidden)]
+#[allow(dead_code)]
+pub trait DuplicateClearRegisterGuard<const REG: usize> {}
+#[doc(hidden)]
+#[allow(dead_code)]
+pub struct DuplicateClearRegisterGuardStruct {}
 /// Convenience macro around the `csrrc`/`csrrci` assembly instruction to clear the CSR register.
 ///
 /// This macro is intended for use with the [clear_csr](crate::clear_csr) or [set_clear_csr](crate::set_clear_csr) macros.
@@ -567,6 +605,9 @@ macro_rules! clear {
         $crate::clear!($csr_number, any(target_arch = "riscv32", target_arch = "riscv64"));
     };
     ($csr_number:literal, $($cfg:meta),*) => {
+        // ensure the type for a register is declared only once
+        #[doc(hidden)]
+        impl $crate::register::macros::DuplicateClearRegisterGuard<$csr_number> for $crate::register::macros::DuplicateClearRegisterGuardStruct {}
         /// Clear the CSR.
         ///
         /// **WARNING**: panics on non-`riscv` targets.

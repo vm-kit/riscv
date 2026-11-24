@@ -143,23 +143,23 @@ pub mod stimecmph;
 pub mod vsiselect;
 
 // Hypervisor Trap Handling
-pub mod hip;
 pub mod hgatp;
+pub mod hip;
 
 // Hypervisor Trap Setup
-pub mod hstatus;
+pub mod hcounteren;
 pub mod hedeleg;
 pub mod hideleg;
 pub mod hie;
-pub mod hcounteren;
+pub mod hstatus;
 
 // Virtual Supervisor Trap Handling
-pub mod vsscratch;
-pub mod vsepc;
-pub mod vscause;
-pub mod vstval;
-pub mod vsip;
 pub mod vsatp;
+pub mod vscause;
+pub mod vsepc;
+pub mod vsip;
+pub mod vsscratch;
+pub mod vstval;
 
 // Virtual Supervisor Trap Setup
 pub mod vsie;

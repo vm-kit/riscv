@@ -2,7 +2,7 @@ use crate::result::{Error, Result};
 
 write_only_csr! {
     /// test CSR register type
-    Mtest: 0x000,
+    Mtest: 0x998,
     mask: 0b1111_1111_1111,
 }
 
