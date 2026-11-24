@@ -71,4 +71,3 @@ mod tests {
         assert!(Vsip::from_bits(1 << 9).seip());
     }
 }
-

@@ -194,9 +194,11 @@ mod tests {
         test_csr_field!(vsstatus, spie);
         test_csr_field!(vsstatus, ube);
 
-        [SPP::VirtualUser, SPP::VirtualSupervisor].into_iter().for_each(|spp| {
-            test_csr_field!(vsstatus, spp: spp);
-        });
+        [SPP::VirtualUser, SPP::VirtualSupervisor]
+            .into_iter()
+            .for_each(|spp| {
+                test_csr_field!(vsstatus, spp: spp);
+            });
 
         [VS::Off, VS::Initial, VS::Clean, VS::Dirty]
             .into_iter()

@@ -114,4 +114,3 @@ mod tests {
         assert!(!s.is_enabled(Interrupt::SupervisorExternal));
     }
 }
-
