@@ -97,11 +97,11 @@ pub unsafe fn set(mode: Mode, vmid: usize, ppn: usize) {
 #[inline]
 #[cfg(target_pointer_width = "32")]
 pub unsafe fn try_set(mode: Mode, vmid: usize, ppn: usize) -> Result<()> {
-    if vmid != vmid & 0x1FF {
+    if vmid != vmid & 0x7F {
         Err(Error::InvalidFieldValue {
             field: "vmid",
             value: vmid,
-            bitmask: 0x1FF,
+            bitmask: 0x7F,
         })
     } else if ppn != ppn & 0x3F_FFFF {
         Err(Error::InvalidFieldValue {
@@ -131,11 +131,11 @@ pub unsafe fn set(mode: Mode, vmid: usize, ppn: usize) {
 #[inline]
 #[cfg(target_pointer_width = "64")]
 pub unsafe fn try_set(mode: Mode, vmid: usize, ppn: usize) -> Result<()> {
-    if vmid != vmid & 0xFFFF {
+    if vmid != vmid & 0x3FFF {
         Err(Error::InvalidFieldValue {
             field: "vmid",
             value: vmid,
-            bitmask: 0xFFFF,
+            bitmask: 0x3FFF,
         })
     } else if ppn != ppn & 0xFFF_FFFF_FFFF {
         Err(Error::InvalidFieldValue {
@@ -155,12 +155,12 @@ mod tests {
 
     #[cfg(target_pointer_width = "32")]
     const VMID_START: usize = 22;
+    #[cfg(target_pointer_width = "32")]
+    const VMID_END_INCLUSIVE: usize = 29;
     #[cfg(target_pointer_width = "64")]
     const VMID_START: usize = 44;
-    #[cfg(target_pointer_width = "32")]
-    const MODE_START: usize = 31;
     #[cfg(target_pointer_width = "64")]
-    const MODE_START: usize = 60;
+    const VMID_END_INCLUSIVE: usize = 58;
 
     #[cfg(target_pointer_width = "32")]
     const MODES: [Mode; 2] = [Mode::Bare, Mode::Sv32x2];
@@ -177,7 +177,7 @@ mod tests {
                 let mut hgatp = Hgatp::from_bits(raw);
 
                 let exp_ppn = raw & ((1usize << VMID_START) - 1);
-                let exp_vmid = (raw & ((1usize << MODE_START) - 1)) >> VMID_START;
+                let exp_vmid = (raw & ((1usize << VMID_END_INCLUSIVE) - 1)) >> VMID_START;
 
                 assert_eq!(hgatp.ppn(), exp_ppn);
 
