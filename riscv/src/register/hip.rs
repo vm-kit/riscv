@@ -46,7 +46,7 @@ clear!(0x644);
 
 set_clear_csr!(
     /// Virtual Supervisor Software Interrupt Pending
-    , set_vssip, clear_vssip, 1 << 1);
+    , set_vssip, clear_vssip, 1 << 2);
 
 /// Clear the pending state of a specific core interrupt source.
 ///
@@ -55,6 +55,7 @@ set_clear_csr!(
 /// Not all interrupt sources allow clearing of pending interrupts via the `hip` register.
 /// Instead, it may be necessary to perform an alternative action to clear the interrupt.
 /// Check the specification of your specific core for details.
+/// VSSIP is the only valid clearable bit if Ssaia is not implemented.
 #[inline]
 pub unsafe fn clear_pending<I: CoreInterruptNumber>(interrupt: I) {
     _clear(1 << interrupt.number());
@@ -73,7 +74,9 @@ mod tests {
         assert!(!hip.vseip());
         assert!(!hip.sgeip());
 
+        assert!(Hip::from_bits(1 << 2).vssip());
         assert!(Hip::from_bits(1 << 6).vstip());
         assert!(Hip::from_bits(1 << 10).vseip());
+        assert!(Hip::from_bits(1 << 12).sgeip());
     }
 }

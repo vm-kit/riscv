@@ -1,5 +1,4 @@
 //! hgatp register
-//! TODO:: Check PPN and VMID masks, and shifts.
 
 use crate::result::{Error, Result};
 

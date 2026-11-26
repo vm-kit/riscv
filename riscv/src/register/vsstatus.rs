@@ -1,13 +1,13 @@
 //! vsstatus register
-//! TODO:: check mask
+//! TODO:: continue testing from here
 
 pub use super::misa::XLEN;
 pub use super::mstatus::{FS, VS, XS};
 
 #[cfg(target_arch = "riscv32")]
-const MASK: usize = 0x800d_e762;
+const MASK: usize = 0x800D_E722;
 #[cfg(not(target_arch = "riscv32"))]
-const MASK: usize = 0x8000_0003_000d_e762;
+const MASK: usize = 0x8000_0003_000D_E722;
 
 read_write_csr! {
     /// Virtual Supervisor Status Register
@@ -38,7 +38,7 @@ read_write_csr_field! {
     spie: 5,
 }
 
-read_write_csr_field! {
+read_only_csr_field! {
     Vsstatus,
     /// VU-mode non-instruction-fetch memory endianness
     ube: 6,
@@ -131,9 +131,6 @@ set_clear_csr!(
 set_csr!(
     /// Virtual Supervisor Previous Interrupt Enable
     , set_spie, 1 << 5);
-set_clear_csr!(
-    /// VU-mode non-instruction-fetch memory endianness
-    , set_ube, clear_ube, 1 << 6);
 set_clear_csr!(
     /// Permit Virtual Supervisor User Memory access
     , set_sum, clear_sum, 1 << 18);

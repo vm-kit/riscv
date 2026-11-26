@@ -3,7 +3,7 @@
 read_write_csr! {
     /// `hideleg` register
     Hideleg: 0x603,
-    mask: 0x222,
+    mask: 0x0222,
 }
 
 read_write_csr_field! {
